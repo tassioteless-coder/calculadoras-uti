@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Calculadoras UTI / Emergência</title>
+
+<style>
+body{
+font-family:Arial, sans-serif;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+}
+
+h1{text-align:center;margin-bottom:25px;}
+h2{margin-top:0;color:#2c3e50;}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+.section{
+margin-bottom:30px;
+padding-bottom:20px;
+border-bottom:1px solid #e0e0e0;
+}
+
+input,select{
+padding:8px;
+margin:6px 5px;
+border:1px solid #ccc;
+border-radius:6px;
+min-width:120px;
+width:auto;
+}
+
+button{
+padding:8px 14px;
+background:#2c7be5;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{background:#1a5dc9;}
+
+.result{
+margin-top:10px;
+font-weight:bold;
+color:#0a5c2e;
+}
+
+.small{
+font-size:12px;
+color:#666;
+margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Calculadoras UTI / Emergência</h1>
+
+<!-- BOMBA --> 
+<div class="section">
+<h2>Bomba de Infusão</h2>
+
+Peso <input id="peso">
+Dose <input id="dose">
+
+<select id="unidade">
+<option value="mcgkgmin">mcg/kg/min</option>
+<option value="mgkgh">mg/kg/h</option>
+<option value="mcgmin">mcg/min</option>
+</select><br>
+
+Concentração Bomba (mcg/ml) <input id="concBomba" placeholder="">
+<button onclick="calcBomba()">Calcular</button>
+
+<div class="result" id="resBomba"></div>
+
+<div class="small">
+Usado para drogas vasoativas e sedação contínua<br>
+Sempre conferir unidade (erro comum em mcg vs mg)<br>
+Ajustar conforme resposta clínica e PAM alvo
+</div>
+</div>
+
+<!-- SOLUCAO PADRAO -->
+<div class="section">
+<h2>Concentração por Diluição (Padrão Hospital)</h2>
+
+Ampolas <input id="ampolas" value="2">
+Volume Total da Diluição (ml) <input id="volume" value="250">
+
+<select id="tipoDroga">
+
+<option value="4">Noradrenalina (4mg/4ml = 1mg/ml | amp 4ml)</option>
+
+<option value="1">Adrenalina (1mg/1ml = 1mg/ml | amp 1ml)</option>
+
+<option value="250">Dobutamina (250mg/5ml = 50mg/ml | amp 5ml)</option>
+
+<option value="50">Dopamina (50mg/10ml = 5mg/ml | amp 10ml)</option>
+
+<option value="200">Dopamina (200mg/10ml = 20mg/ml | amp 10ml)</option>
+
+<option value="5">Midazolam (5mg/5ml = 1mg/ml | amp 5ml)</option>
+
+<option value="0.5">Fentanil (500mcg/10ml = 50mcg/ml = 0.05mg/ml | amp 10ml)</option>
+
+<option value="10">Morfina (10mg/1ml = 10mg/ml | amp 1ml)</option>
+
+<option value="200">Propofol (200mg/20ml = 10mg/ml | amp 20ml)</option>
+
+<option value="100">Insulina Regular (100UI/1ml = 100UI/ml | amp 1ml)</option>
+
+<option value="0.2">Dexmedetomidina (200mcg/2ml = 100mcg/ml = 0.1mg/ml | frasco 2ml)</option>
+
+<option value="500">Sulfato de Magnésio (500mg/ml | amp 10ml = 5g)</option>
+
+<option value="10">Metoclopramida (10mg/2ml = 5mg/ml | amp 2ml)</option>
+
+<option value="25000">Heparina Não Fracionada (25000 UI/5ml = 5000 UI/ml | frasco 5ml)</option>
+
+<option value="20">Escopolamina (20mg/1ml = 20mg/ml | amp 1ml)</option>
+
+<option value="75">Diclofenaco (75mg/3ml = 25mg/ml | amp 3ml)</option>
+
+</select>
+
+<br>
+
+<button onclick="calcConc()">Calcular Concentração</button>
+
+<div class="result" id="resConc"></div>
+
+<div class="small">
+Preenche automaticamente a concentração para uso na bomba<br>
+Evita erro de cálculo manual (principal causa de erro em UTI)
+</div>
+</div>
+
+<!-- INVERSO -->
+<div class="section">
+<h2>Calcular Dose pela Bomba</h2>
+
+Peso <input id="peso2">
+Fluxo (mL/h) <input id="mlh">
+Concentração mcg/ml <input id="conc2">
+
+<button onclick="calcDose()">Calcular</button>
+
+<div class="result" id="resDose"></div>
+
+<div class="small">
+Permite descobrir dose real administrada<br>
+Muito útil em UTI e ajustes de noradrenalina, sedação<br>
+Sempre revisar concentração da ampola/diluição
+</div>
+</div>
+
+<!-- PESO IDEAL -->
+<div class="section">
+  <h2>Peso Ideal</h2>
+
+  Altura (cm) <input id="alturaPI" placeholder="Ex: 178">
+  Sexo 
+  <select id="sexoPI">
+    <option value="M">Masculino</option>
+    <option value="F">Feminino</option>
+  </select>
+  <button onclick="calcPesoIdeal()">Calcular</button>
+
+  <div class="result" id="resPesoIdeal"></div>
+
+  <div class="small">
+    Fórmula de Devine
+  </div>
+</div>
+
+<!-- COCKCROFT -->
+<div class="section">
+<h2>Cockcroft-Gault</h2>
+
+Idade <input id="idade">
+Peso <input id="pesoCr">
+Creatinina <input id="cr">
+
+<select id="sexo">
+<option value="1">Masculino</option>
+<option value="0.85">Feminino</option>
+</select>
+
+<button onclick="calcCr()">Calcular</button>
+
+<div class="result" id="resCr"></div>
+
+<div class="small">
+Estimativa de clearance para ajuste de drogas<br>
+Usado em farmacocinética (ex: antibióticos)<br>
+Superestima em obesos e subestima em idosos frágeis
+</div>
+</div>
+
+<!-- CKD-EPI -->
+<div class="section">
+<h2>TFG (CKD-EPI)</h2>
+
+Idade <input id="idadeCKD">
+Creatinina (mg/dL) <input id="crCKD">
+
+<select id="sexoCKD">
+<option value="M">Masculino</option>
+<option value="F">Feminino</option>
+</select>
+
+<button onclick="calcCKD()">Calcular</button>
+
+<div class="result" id="resCKD"></div>
+
+<div class="small">
+G1 ≥ 90 → Normal<br>
+G2 60–89 → Leve redução<br>
+G3a 45–59 → Leve-moderada<br>
+G3b 30–44 → Moderada-grave<br>
+G4 15–29 → Grave<br>
+G5 &lt; 15 → Falência renal
+</div>
+</div>
+
+<!-- SÓDIO -->
+<div class="section">
+<h2>Sódio Corrigido</h2>
+
+Na <input id="na">
+Glicemia <input id="glic">
+
+<button onclick="calcNa()">Calcular</button>
+
+<div class="result" id="resNa"></div>
+
+<div class="small">
+Correção na hiperglicemia (pseudohiponatremia)<br>
++1,6 mEq/L a cada 100 mg/dL de glicose acima de 100<br>
+Importante antes de tratar hiponatremia
+</div>
+</div>
+
+<!-- ANION GAP -->
+<div class="section">
+<h2>Anion Gap</h2>
+
+Na <input id="ag_na">
+Cl <input id="ag_cl">
+HCO3 <input id="ag_hco3">
+
+<button onclick="calcAG()">Calcular</button>
+
+<div class="result" id="resAG"></div>
+
+<div class="small">
+Normal: 8–12 mEq/L<br>
+↑ AG → acidose metabólica (lactato, cetoacidose, IRA)<br>
+Normal → acidose hiperclorêmica (diarreia, RTA)
+</div>
+</div>
+
+<!-- PaO2/FiO2 -->
+<div class="section">
+<h2>PaO2 / FiO2</h2>
+
+PaO2 <input id="pf_pao2">
+FiO2 (%) <input id="pf_fio2">
+
+<button onclick="calcPF()">Calcular</button>
+
+<div class="result" id="resPF"></div>
+
+<div class="small">
+Normal > 400<br>
+Leve 300–400<br>
+Moderado 200–300<br>
+Grave < 200<br>
+Critério para SDRA (Berlin)
+</div>
+</div>
+
+</div>
+
+<script>
+/* BOMBA */
+function calcBomba(){
+    let peso = parseFloat(document.getElementById("peso").value);
+    let dose = parseFloat(document.getElementById("dose").value);
+    let conc = parseFloat(document.getElementById("concBomba").value); // novo
+    let unidade = document.getElementById("unidade").value;
+
+    if(!peso || !dose || !conc){
+        alert("Preencha todos os campos");
+        return;
+    }
+
+    let concCalc = conc; // valor usado para cálculo
+    let unidadeExibir = "mg/mL";
+
+    // Se a dose está em mcg, converte conc de mg → mcg
+    if(unidade === "mcgkgmin" || unidade === "mcgmin"){
+        concCalc = conc; // mg → mcg
+        unidadeExibir = "mcg/mL";
+    }
+
+    let mlh = 0;
+    if(unidade=="mcgkgmin") mlh=(dose*peso*60)/concCalc;
+    if(unidade=="mgkgh") mlh=(dose*peso)/concCalc;
+    if(unidade=="mcgmin") mlh=(dose*60)/concCalc;
+
+    document.getElementById("resBomba").innerText=
+        "Velocidade: "+mlh.toFixed(2)+" mL/h ("+unidadeExibir+")";
+}
+
+/* PESO IDEAL */
+function calcPesoIdeal() {
+    let altura = parseFloat(document.getElementById("alturaPI").value);
+    let sexo = document.getElementById("sexoPI").value;
+
+    if (!altura) {
+        alert("Preencha a altura");
+        return;
+    }
+
+    // converte altura cm → polegadas
+    let alturaPolegadas = altura / 2.54;
+
+    let pesoIdeal;
+    if (sexo === "M") {
+        pesoIdeal = 50 + 2.3 * (alturaPolegadas - 60);
+    } else {
+        pesoIdeal = 45.5 + 2.3 * (alturaPolegadas - 60);
+    }
+
+    document.getElementById("resPesoIdeal").innerText =
+        "Peso Ideal: " + pesoIdeal.toFixed(1) + " kg";
+}
+
+/* INVERSO */
+function calcDose(){
+let peso=parseFloat(document.getElementById("peso2").value)
+let mlh=parseFloat(document.getElementById("mlh").value)
+let conc=parseFloat(document.getElementById("conc2").value)
+
+if(!peso || !mlh || !conc){
+alert("Preencha todos os campos")
+return
+}
+
+let dose=(mlh*conc)/(peso*60)
+
+document.getElementById("resDose").innerText=
+"Dose: "+dose.toFixed(3)+" mcg/kg/min"
+}
+
+/* COCKCROFT */
+function calcCr(){
+let idade=parseFloat(document.getElementById("idade").value)
+let peso=parseFloat(document.getElementById("pesoCr").value)
+let cr=parseFloat(document.getElementById("cr").value)
+let sexo=parseFloat(document.getElementById("sexo").value)
+
+if(!idade || !peso || !cr){
+alert("Preencha todos os campos")
+return
+}
+
+let cl=((140-idade)*peso)/(72*cr)
+cl=cl*sexo
+
+document.getElementById("resCr").innerText=
+"Clearance: "+cl.toFixed(1)+" mL/min"
+}
+
+/* CKD-EPI */
+function calcCKD(){
+
+let idade=parseFloat(document.getElementById("idadeCKD").value)
+let cr=parseFloat(document.getElementById("crCKD").value)
+let sexo=document.getElementById("sexoCKD").value
+
+if(!idade || !cr){
+alert("Preencha todos os campos")
+return
+}
+
+/* parâmetros CKD-EPI 2009 */
+let k = (sexo=="F") ? 0.7 : 0.9
+let a = (sexo=="F") ? -0.329 : -0.411
+let fatorSexo = (sexo=="F") ? 1.018 : 1
+
+let ratio = cr / k
+
+let egfr = 141 *
+Math.pow(Math.min(ratio,1), a) *
+Math.pow(Math.max(ratio,1), -1.209) *
+Math.pow(0.993, idade) *
+fatorSexo
+
+/* CLASSIFICAÇÃO */
+let estagio=""
+
+if(egfr >= 90) estagio="G1 (normal)"
+else if(egfr >= 60) estagio="G2 (leve)"
+else if(egfr >= 45) estagio="G3a"
+else if(egfr >= 30) estagio="G3b"
+else if(egfr >= 15) estagio="G4 (grave)"
+else estagio="G5 (falência renal)"
+
+/* OUTPUT */
+document.getElementById("resCKD").innerText =
+"TFG: " + egfr.toFixed(1) + " mL/min/1.73m² ("+estagio+")"
+}
+
+/* SÓDIO */
+function calcNa(){
+let na=parseFloat(document.getElementById("na").value)
+let glic=parseFloat(document.getElementById("glic").value)
+
+if(!na || !glic){
+alert("Preencha todos os campos")
+return
+}
+
+let corrigido=na + 1.6*((glic-100)/100)
+
+document.getElementById("resNa").innerText=
+"Na corrigido: "+corrigido.toFixed(2)
+}
+
+/* ANION GAP */
+function calcAG(){
+let na=parseFloat(document.getElementById("ag_na").value)
+let cl=parseFloat(document.getElementById("ag_cl").value)
+let hco3=parseFloat(document.getElementById("ag_hco3").value)
+
+if(!na || !cl || !hco3){
+alert("Preencha todos os campos")
+return
+}
+
+let ag=na-(cl+hco3)
+
+document.getElementById("resAG").innerText=
+"AG: "+ag.toFixed(2)
+}
+
+/* PaO2/FiO2 */
+function calcPF(){
+let pao2=parseFloat(document.getElementById("pf_pao2").value)
+let fio2=parseFloat(document.getElementById("pf_fio2").value)/100
+
+if(!pao2 || !fio2){
+alert("Preencha todos os campos")
+return
+}
+
+let pf=pao2/fio2
+
+document.getElementById("resPF").innerText=
+"PaO2/FiO2: "+pf.toFixed(0)
+}
+
+/* Concentração por diluição */
+function calcConc() {
+    // pega os elementos
+    const ampolasEl = document.getElementById("ampolas");
+    const volumeEl = document.getElementById("volume");
+    const tipoDrogaEl = document.getElementById("tipoDroga");
+    const concEl = document.getElementById("conc");
+    const resConcEl = document.getElementById("resConc");
+
+    // converte valores
+    const ampolas = parseFloat(ampolasEl.value);
+    const volume = parseFloat(volumeEl.value);
+    const mgPorAmpola = parseFloat(tipoDrogaEl.value);
+
+    // validação simples
+    if (!ampolas || !volume || !mgPorAmpola) {
+        alert("Preencha todos os campos");
+        return;
+    }
+
+    // calcula total e concentração
+    const total = ampolas * mgPorAmpola;
+    const conc = total / volume;
+    let concBomba = conc * 1000;
+    document.getElementById("concBomba").value = concBomba % 1 === 0 ? concBomba.toString() : concBomba.toFixed(2);
+
+    // define unidade correta apenas para Insulina e Heparina
+    const unidade = (tipoDrogaEl.value === "100" || tipoDrogaEl.value === "25000") ? "UI/mL" : "mg/mL";
+
+    // exibe resultado completo
+  resConcEl.innerText = `${ampolas} amp → ${total} ${unidade} em ${volume} ml = ${parseFloat(conc.toFixed(4))} ${unidade}`;
+
+    // joga valor direto na bomba
+    concEl.value = conc.toFixed(4);
+}
+
+</script>
+
+</body>
+</html>
