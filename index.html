@@ -500,6 +500,8 @@ function calcConc() {
     const total = ampolas * mgPorAmpola;
     const conc = total / volume;
     let concBomba = conc * 1000;
+    let conc2 = conc * 1000;
+    document.getElementById("conc2").value = conc2 % 1 === 0 ? conc2.toString() : conc2.toFixed(2);
     document.getElementById("concBomba").value = concBomba % 1 === 0 ? concBomba.toString() : concBomba.toFixed(2);
 
     // define unidade correta apenas para Insulina e Heparina
