@@ -35,7 +35,6 @@ padding:8px;
 margin:6px 5px;
 border:1px solid #ccc;
 border-radius:6px;
-min-width:120px;
 width:auto;
 }
 
@@ -61,6 +60,22 @@ font-size:12px;
 color:#666;
 margin-top:8px;
 }
+
+.input-pequeno{
+width:60px;
+text-align:center;
+}
+
+.input-medio{
+width:100px;
+text-align:center;
+}
+
+.input-grande{
+width:150px;
+text-align:center;
+}
+
 </style>
 </head>
 
@@ -73,8 +88,8 @@ margin-top:8px;
 <div class="section">
 <h2>Bomba de Infusão</h2>
 
-Peso <input id="peso">
-Dose <input id="dose">
+Peso <input id="peso" class="input-pequeno">
+Dose <input id="dose" class="input-pequeno">
 
 <select id="unidade">
 <option value="mcgkgmin">mcg/kg/min</option>
@@ -82,7 +97,7 @@ Dose <input id="dose">
 <option value="mcgmin">mcg/min</option>
 </select><br>
 
-Concentração Bomba (mcg/ml) <input id="concBomba" placeholder="">
+Concentração Bomba (mcg/ml) <input id="concBomba" class="input-pequeno">
 <button onclick="calcBomba()">Calcular</button>
 
 <div class="result" id="resBomba"></div>
@@ -98,8 +113,8 @@ Ajustar conforme resposta clínica e PAM alvo
 <div class="section">
 <h2>Concentração por Diluição (Padrão Hospital)</h2>
 
-Ampolas <input id="ampolas" value="2">
-Volume Total da Diluição (ml) <input id="volume" value="250">
+Ampolas <input id="ampolas" value="2" class="input-pequeno">
+Volume Total da Diluição (ml) <input id="volume" value="250" class="input-pequeno">
 
 <select id="tipoDroga">
 
@@ -153,9 +168,9 @@ Evita erro de cálculo manual (principal causa de erro em UTI)
 <div class="section">
 <h2>Calcular Dose pela Bomba</h2>
 
-Peso <input id="peso2">
-Fluxo (mL/h) <input id="mlh">
-Concentração mcg/ml <input id="conc2">
+Peso <input id="peso2" class="input-pequeno">
+Fluxo (mL/h) <input id="mlh" class="input-pequeno">
+Concentração mcg/ml <input id="conc2" class="input-pequeno">
 
 <button onclick="calcDose()">Calcular</button>
 
@@ -168,11 +183,32 @@ Sempre revisar concentração da ampola/diluição
 </div>
 </div>
 
+<!-- NORADRENALINA EQUIVALENTE -->
+<div class="section">
+<h2>Noradrenalina Equivalente</h2>
+
+Noradrenalina <input id="ne_norad" class="input-pequeno">
+Adrenalina <input id="ne_adrenal" class="input-pequeno">
+Dopamina <input id="ne_dopa" class="input-pequeno">
+Vasopressina (U/min) <input id="ne_vaso" class="input-pequeno">
+
+<button onclick="calcNEeq()">Calcular</button>
+
+<div class="result" id="resNEeq"></div>
+
+<div class="small">
+Noradrenalina, adrenalina, dopamina: mcg/kg/min 
+- Vasopressina: U/min<br>
+Resultado em equivalente de noradrenalina
+NE eq = nora + adrena + dopa/150 + vasopressina×2.5<br>
+</div>
+</div>
+
 <!-- PESO IDEAL -->
 <div class="section">
   <h2>Peso Ideal</h2>
 
-  Altura (cm) <input id="alturaPI" placeholder="Ex: 178">
+  Altura (cm) <input id="alturaPI" placeholder="Ex: 178" class="input-pequeno">
   Sexo 
   <select id="sexoPI">
     <option value="M">Masculino</option>
@@ -187,13 +223,31 @@ Sempre revisar concentração da ampola/diluição
   </div>
 </div>
 
+<!-- VENTILAÇÃO -->
+<div class="section">
+<h2>Ventilação (VC / VM)</h2>
+
+Peso Ideal <input id="pesoVent" class="input-pequeno">
+FR <input id="frVent" class="input-pequeno">
+
+<button onclick="calcVentilacao()">Calcular</button>
+
+<div class="result" id="resVent"></div>
+
+<div class="small">
+VC protetor: 6–8 mL/kg (peso ideal)<br>
+VM = Volume Corrente × Frequência<br>
+Importante em ventilação mecânica (SDRA)
+</div>
+</div>
+
 <!-- COCKCROFT -->
 <div class="section">
 <h2>Cockcroft-Gault</h2>
 
-Idade <input id="idade">
-Peso <input id="pesoCr">
-Creatinina <input id="cr">
+Idade <input id="idade" class="input-pequeno">
+Peso <input id="pesoCr" class="input-pequeno">
+Creatinina <input id="cr" class="input-pequeno">
 
 <select id="sexo">
 <option value="1">Masculino</option>
@@ -215,8 +269,8 @@ Superestima em obesos e subestima em idosos frágeis
 <div class="section">
 <h2>TFG (CKD-EPI)</h2>
 
-Idade <input id="idadeCKD">
-Creatinina (mg/dL) <input id="crCKD">
+Idade <input id="idadeCKD" class="input-pequeno">
+Creatinina (mg/dL) <input id="crCKD" class="input-pequeno">
 
 <select id="sexoCKD">
 <option value="M">Masculino</option>
@@ -241,8 +295,8 @@ G5 &lt; 15 → Falência renal
 <div class="section">
 <h2>Sódio Corrigido</h2>
 
-Na <input id="na">
-Glicemia <input id="glic">
+Na <input id="na" class="input-pequeno">
+Glicemia <input id="glic" class="input-pequeno">
 
 <button onclick="calcNa()">Calcular</button>
 
@@ -255,13 +309,68 @@ Importante antes de tratar hiponatremia
 </div>
 </div>
 
+<!-- DEFICIT SODIO -->
+<div class="section">
+<h2>Déficit de Sódio</h2>
+
+Na Atual <input id="naAtual" class="input-pequeno">
+Na Desejado <input id="naDesejado" class="input-pequeno">
+Peso <input id="pesoNa" class="input-pequeno">
+
+<button onclick="calcDeficitNa()">Calcular</button>
+
+<div class="result" id="resDefNa"></div>
+
+<div class="small">
+Estimativa de reposição de sódio<br>
+Usado em hiponatremia<br>
+Corrigir lentamente para evitar mielinólise
+</div>
+</div>
+
+<!-- DEFICIT POTASSIO -->
+<div class="section">
+<h2>Déficit de Potássio</h2>
+
+K Atual <input id="kAtual" class="input-pequeno">
+Peso <input id="pesoK" class="input-pequeno">
+
+<button onclick="calcK()">Calcular</button>
+
+<div class="result" id="resK"></div>
+
+<div class="small">
+Estimativa de déficit de potássio<br>
+Muito usado em UTI e emergência<br>
+Sempre monitorar ECG durante reposição
+</div>
+</div>
+
+<!-- CALCIO -->
+<div class="section">
+<h2>Cálcio Corrigido</h2>
+
+Cálcio <input id="ca" class="input-pequeno">
+Albumina <input id="alb" class="input-pequeno">
+
+<button onclick="calcCalcio()">Calcular</button>
+
+<div class="result" id="resCa"></div>
+
+<div class="small">
+Corrige cálcio total pela albumina<br>
+Importante em pacientes críticos<br>
+Evita subdiagnóstico de hipocalcemia
+</div>
+</div>
+
 <!-- ANION GAP -->
 <div class="section">
 <h2>Anion Gap</h2>
 
-Na <input id="ag_na">
-Cl <input id="ag_cl">
-HCO3 <input id="ag_hco3">
+Na <input id="ag_na" class="input-pequeno">
+Cl <input id="ag_cl" class="input-pequeno">
+HCO3 <input id="ag_hco3" class="input-pequeno">
 
 <button onclick="calcAG()">Calcular</button>
 
@@ -274,12 +383,87 @@ Normal → acidose hiperclorêmica (diarreia, RTA)
 </div>
 </div>
 
+<!-- ANION GAP CORRIGIDO -->
+<div class="section">
+<h2>Anion Gap Corrigido (Albumina)</h2>
+
+AG <input id="agc_ag" class="input-pequeno">
+Albumina <input id="agc_alb" class="input-pequeno">
+
+<button onclick="calcAGcorr()">Calcular</button>
+
+<div class="result" id="resAGcorr"></div>
+
+<div class="small">
+Corrige o AG para hipoalbuminemia<br>
+AG corrigido = AG + 2.5 × (4 - albumina)<br>
+Evita perder acidose metabólica oculta
+</div>
+</div>
+
+<!-- DELTA GAP -->
+<div class="section">
+<h2>Delta Gap</h2>
+
+AG <input id="dg_ag" class="input-pequeno">
+HCO3 <input id="dg_hco3" class="input-pequeno">
+
+<button onclick="calcDeltaGap()">Calcular</button>
+
+<div class="result" id="resDeltaGap"></div>
+
+<div class="small">
+Avalia distúrbios ácido-base mistos<br>
+1–2: acidose metabólica pura<br>
+&lt;1 ou &gt;2: distúrbio associado
+</div>
+</div>
+
+<!-- OSMOLARIDADE -->
+<div class="section">
+<h2>Osmolaridade Plasmática</h2>
+
+Na <input id="osm_na" class="input-pequeno">
+Glicose <input id="osm_glic" class="input-pequeno">
+Ureia <input id="osm_ureia" class="input-pequeno">
+
+<button onclick="calcOsm()">Calcular</button>
+
+<div class="result" id="resOsm"></div>
+
+<div class="small">
+Fórmula: 2xNa + glicose/18 + ureia/6<br>
+Normal: 275–295 mOsm/kg<br>
+Útil em distúrbios metabólicos e intoxicações
+</div>
+</div>
+
+<!-- GRADIENTE A-a -->
+<div class="section">
+<h2>Gradiente Alveolo-Arterial (A–a)</h2>
+
+Idade <input id="aa_idade" class="input-pequeno">
+PaO2 <input id="aa_pao2" class="input-pequeno">
+PaCO2 <input id="aa_paco2" class="input-pequeno">
+FiO2 (%) <input id="aa_fio2" class="input-pequeno">
+
+<button onclick="calcAA()">Calcular</button>
+
+<div class="result" id="resAA"></div>
+
+<div class="small">
+Normal ≈ idade/4 + 4<br>
+↑ Gradiente → V/Q, shunt ou difusão<br>
+Interpretar com cautela se FiO2 > 21%
+</div>
+</div>
+
 <!-- PaO2/FiO2 -->
 <div class="section">
 <h2>PaO2 / FiO2</h2>
 
-PaO2 <input id="pf_pao2">
-FiO2 (%) <input id="pf_fio2">
+PaO2 <input id="pf_pao2" class="input-pequeno">
+FiO2 (%) <input id="pf_fio2" class="input-pequeno">
 
 <button onclick="calcPF()">Calcular</button>
 
@@ -294,14 +478,15 @@ Critério para SDRA (Berlin)
 </div>
 </div>
 
+
 </div>
 
 <script>
 /* BOMBA */
 function calcBomba(){
-    let peso = parseFloat(document.getElementById("peso").value);
-    let dose = parseFloat(document.getElementById("dose").value);
-    let conc = parseFloat(document.getElementById("concBomba").value); // novo
+    let peso = parseFloat(document.getElementById("peso").value.replace(",", "."));
+    let dose = parseFloat(document.getElementById("dose").value.replace(",", "."));
+    let conc = parseFloat(document.getElementById("concBomba").value.replace(",", "."));
     let unidade = document.getElementById("unidade").value;
 
     if(!peso || !dose || !conc){
@@ -329,7 +514,7 @@ function calcBomba(){
 
 /* PESO IDEAL */
 function calcPesoIdeal() {
-    let altura = parseFloat(document.getElementById("alturaPI").value);
+    let altura = parseFloat(document.getElementById("alturaPI").value.replace(",", "."));
     let sexo = document.getElementById("sexoPI").value;
 
     if (!altura) {
@@ -353,9 +538,9 @@ function calcPesoIdeal() {
 
 /* INVERSO */
 function calcDose(){
-let peso=parseFloat(document.getElementById("peso2").value)
-let mlh=parseFloat(document.getElementById("mlh").value)
-let conc=parseFloat(document.getElementById("conc2").value)
+let peso=parseFloat(document.getElementById("peso2").value.replace(",", "."))
+let mlh=parseFloat(document.getElementById("mlh").value.replace(",", "."))
+let conc=parseFloat(document.getElementById("conc2").value.replace(",", "."))
 
 if(!peso || !mlh || !conc){
 alert("Preencha todos os campos")
@@ -371,8 +556,8 @@ document.getElementById("resDose").innerText=
 /* COCKCROFT */
 function calcCr(){
 let idade=parseFloat(document.getElementById("idade").value)
-let peso=parseFloat(document.getElementById("pesoCr").value)
-let cr=parseFloat(document.getElementById("cr").value)
+let peso=parseFloat(document.getElementById("pesoCr").value.replace(",", "."))
+let cr=parseFloat(document.getElementById("cr").value.replace(",", "."))
 let sexo=parseFloat(document.getElementById("sexo").value)
 
 if(!idade || !peso || !cr){
@@ -391,7 +576,7 @@ document.getElementById("resCr").innerText=
 function calcCKD(){
 
 let idade=parseFloat(document.getElementById("idadeCKD").value)
-let cr=parseFloat(document.getElementById("crCKD").value)
+let cr=parseFloat(document.getElementById("crCKD").value.replace(",", "."))
 let sexo=document.getElementById("sexoCKD").value
 
 if(!idade || !cr){
@@ -447,7 +632,7 @@ document.getElementById("resNa").innerText=
 function calcAG(){
 let na=parseFloat(document.getElementById("ag_na").value)
 let cl=parseFloat(document.getElementById("ag_cl").value)
-let hco3=parseFloat(document.getElementById("ag_hco3").value)
+let hco3=parseFloat(document.getElementById("ag_hco3").value.replace(",", "."))
 
 if(!na || !cl || !hco3){
 alert("Preencha todos os campos")
@@ -488,7 +673,7 @@ function calcConc() {
     // converte valores
     const ampolas = parseFloat(ampolasEl.value);
     const volume = parseFloat(volumeEl.value);
-    const mgPorAmpola = parseFloat(tipoDrogaEl.value);
+    const mgPorAmpola = parseFloat(tipoDrogaEl.value.replace(",", "."));
 
     // validação simples
     if (!ampolas || !volume || !mgPorAmpola) {
@@ -512,6 +697,238 @@ function calcConc() {
 
     // joga valor direto na bomba
     concEl.value = conc.toFixed(4);
+}
+
+/* OSMOLARIDADE */
+function calcOsm(){
+let na=parseFloat(document.getElementById("osm_na").value)
+let glic=parseFloat(document.getElementById("osm_glic").value)
+let ureia=parseFloat(document.getElementById("osm_ureia").value)
+
+if(!na || !glic || !ureia){
+alert("Preencha todos os campos")
+return
+}
+
+let osm = (2*na) + (glic/18) + (ureia/6)
+
+document.getElementById("resOsm").innerText=
+"Osmolaridade: "+osm.toFixed(1)+" mOsm/kg"
+}
+
+/* Gradiente A-a */
+function calcAA(){
+let idade=parseFloat(document.getElementById("aa_idade").value)
+let pao2=parseFloat(document.getElementById("aa_pao2").value)
+let paco2=parseFloat(document.getElementById("aa_paco2").value)
+let fio2=parseFloat(document.getElementById("aa_fio2").value)/100
+
+if(!idade || !pao2 || !paco2 || !fio2){
+alert("Preencha todos os campos")
+return
+}
+
+// Equação alveolar
+let pao2_alveolar = (fio2 * (760 - 47)) - (paco2 / 0.8)
+let gradiente = pao2_alveolar - pao2
+
+// Valor esperado
+let normal = (idade/4) + 4
+
+// Interpretação
+let interpretacao = ""
+
+if(gradiente <= normal){
+    interpretacao = "Normal"
+} else if(gradiente <= normal*2){
+    interpretacao = "Levemente aumentado (V/Q leve?)"
+} else {
+    interpretacao = "Aumentado (V/Q, shunt ou difusão)"
+}
+
+// Aviso FiO2
+let aviso = ""
+if(fio2 > 0.21){
+    aviso = " ⚠️ FiO2 elevada pode superestimar o gradiente"
+}
+
+// Resultado final
+document.getElementById("resAA").innerText =
+"A–a: " + gradiente.toFixed(1) +
+" | Normal esperado: " + normal.toFixed(1) +
+" → " + interpretacao + aviso
+}
+
+function getVal(id){
+    let v = document.getElementById(id).value;
+    if(!v) return null;
+    return parseFloat(v.replace(",", "."));
+}
+
+/* =========================
+DELTA GAP
+========================= */
+function calcDeltaGap(){
+let ag = getVal("dg_ag");
+let hco3 = getVal("dg_hco3");
+
+if(!ag || !hco3){
+alert("Preencha todos os campos");
+return;
+}
+
+let delta = (ag - 12) / (24 - hco3);
+
+let interpretacao = "";
+if(delta < 1) interpretacao = "Acidose metabólica + acidose hiperclorêmica";
+else if(delta <= 2) interpretacao = "Acidose metabólica pura";
+else interpretacao = "Acidose metabólica + alcalose metabólica";
+
+document.getElementById("resDeltaGap").innerText =
+"Delta Gap: " + delta.toFixed(2) + " → " + interpretacao;
+}
+
+/* =========================
+VOLUME CORRENTE + VM
+========================= */
+function calcVentilacao(){
+let peso = getVal("pesoVent");
+let fr = getVal("frVent");
+
+if(!peso || !fr){
+alert("Preencha todos os campos");
+return;
+}
+
+let vc_min = peso * 6;
+let vc_max = peso * 8;
+
+let vm_min = (vc_min * fr) / 1000;
+let vm_max = (vc_max * fr) / 1000;
+
+document.getElementById("resVent").innerText =
+"VC: " + vc_min.toFixed(0) + "–" + vc_max.toFixed(0) + " mL | VM: " +
+vm_min.toFixed(1) + "–" + vm_max.toFixed(1) + " L/min";
+}
+
+/* =========================
+DÉFICIT DE SÓDIO
+========================= */
+function calcDeficitNa(){
+let naAtual = getVal("naAtual");
+let naDesejado = getVal("naDesejado");
+let peso = getVal("pesoNa");
+
+if(!naAtual || !naDesejado || !peso){
+alert("Preencha todos os campos");
+return;
+}
+
+let deficit = (naDesejado - naAtual) * peso * 0.6;
+
+document.getElementById("resDefNa").innerText =
+"Déficit de Na: " + deficit.toFixed(1) + " mEq";
+}
+
+/* =========================
+DÉFICIT DE POTÁSSIO
+========================= */
+function calcK(){
+let k = getVal("kAtual");
+let peso = getVal("pesoK");
+
+if(!k || !peso){
+alert("Preencha todos os campos");
+return;
+}
+
+let deficit = (4 - k) * peso * 0.4;
+
+document.getElementById("resK").innerText =
+"Déficit estimado: " + deficit.toFixed(1) + " mEq";
+}
+
+/* =========================
+PAO2
+========================= */
+function calcPAO2(){
+let fio2 = getVal("fio2PA") / 100;
+let paco2 = getVal("paco2PA");
+
+if(!fio2 || !paco2){
+alert("Preencha todos os campos");
+return;
+}
+
+let pao2 = fio2 * (760 - 47) - (paco2 / 0.8);
+
+document.getElementById("resPAO2").innerText =
+"PAO2: " + pao2.toFixed(1);
+}
+
+/* =========================
+CÁLCIO CORRIGIDO
+========================= */
+function calcCalcio(){
+let ca = getVal("ca");
+let alb = getVal("alb");
+
+if(!ca || !alb){
+alert("Preencha todos os campos");
+return;
+}
+
+let corrigido = ca + 0.8 * (4 - alb);
+
+document.getElementById("resCa").innerText =
+"Cálcio corrigido: " + corrigido.toFixed(2);
+}
+
+/* =========================
+AG CORRIGIDO PELA ALBUMINA
+========================= */
+function calcAGcorr(){
+let ag = getVal("agc_ag");
+let alb = getVal("agc_alb");
+
+if(ag === null || alb === null){
+alert("Preencha todos os campos");
+return;
+}
+
+let agCorr = ag + 2.5 * (4 - alb);
+
+let interpretacao = "";
+if(agCorr > 12) interpretacao = "Ânion gap elevado (mesmo com albumina baixa)";
+else interpretacao = "Ânion gap normal";
+
+document.getElementById("resAGcorr").innerText =
+"AG corrigido: " + agCorr.toFixed(2) + " → " + interpretacao;
+}
+
+/* =========================
+NORADRENALINA EQUIVALENTE
+========================= */
+function calcNEeq(){
+let norad = getVal("ne_norad");      // mcg/kg/min
+let adrenal = getVal("ne_adrenal");  // mcg/kg/min
+let dopamina = getVal("ne_dopa");    // mcg/kg/min
+let vaso = getVal("ne_vaso");        // U/min
+
+if(norad === null) norad = 0;
+if(adrenal === null) adrenal = 0;
+if(dopamina === null) dopamina = 0;
+if(vaso === null) vaso = 0;
+
+let neEq = norad + adrenal + (dopamina/150) + (vaso*2.5);
+
+let gravidade = "";
+if(neEq < 0.1) gravidade = "Baixa dose";
+else if(neEq < 0.3) gravidade = "Moderada";
+else gravidade = "Alta dose (choque grave)";
+
+document.getElementById("resNEeq").innerText =
+"NE equivalente: " + neEq.toFixed(3) + " mcg/kg/min → " + gravidade;
 }
 
 </script>
